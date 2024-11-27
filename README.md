@@ -1,0 +1,1 @@
+The Learntime Web Clipper serves a single purpose: to save web page content directly to Learntime as study topics. When users find valuable information online, they can click the extension to capture that content and automatically create a new topic in their Learntime MemoryStack.
