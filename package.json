@@ -1,0 +1,10 @@
+{
+  "name": "learntime-extension",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.287",
+    "typescript": "^5"
+  }
+}

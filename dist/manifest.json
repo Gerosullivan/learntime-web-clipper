@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Learntime Web Clipper",
+  "version": "1.0.0",
+  "description": "Save web pages as topics in Learntime for active recall and spaced repetition learning.",
+  "permissions": ["activeTab"],
+  "host_permissions": ["https://app.learntime.ai/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/content.js"]
+    }
+  ]
+}
