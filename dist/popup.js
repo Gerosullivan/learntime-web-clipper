@@ -7,6 +7,15 @@ let workspaces = [];
 async function init() {
     var _a;
     try {
+        // Get current tab to pre-fill title
+        const [tab] = await chrome.tabs.query({
+            active: true,
+            currentWindow: true,
+        });
+        const titleInput = document.getElementById("title-input");
+        if (titleInput && tab.title) {
+            titleInput.value = tab.title;
+        }
         const response = await fetch("https://app.learntime.ai/api/auth/session");
         const data = await response.json();
         if ((_a = data.session) === null || _a === void 0 ? void 0 : _a.access_token) {
@@ -26,12 +35,12 @@ async function fetchWorkspaces() {
     try {
         const response = await fetch("https://app.learntime.ai/api/workspaces", {
             headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
+                Authorization: `Bearer ${accessToken}`,
+            },
         });
         workspaces = await response.json();
         const select = document.getElementById("workspace-select");
-        workspaces.forEach(workspace => {
+        workspaces.forEach((workspace) => {
             const option = document.createElement("option");
             option.value = workspace.id;
             option.textContent = workspace.name;
@@ -48,9 +57,20 @@ async function fetchWorkspaces() {
         showError("Please select a workspace");
         return;
     }
+    const titleInput = document.getElementById("title-input");
+    const title = titleInput.value.trim();
+    if (!title) {
+        showError("Please enter a title");
+        return;
+    }
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (!tab.id)
         return;
+    // Show loading state
+    const saveButton = document.getElementById("save-page");
+    const originalText = saveButton.textContent;
+    saveButton.textContent = "Saving...";
+    saveButton.disabled = true;
     // Get page content from content script
     chrome.tabs.sendMessage(tab.id, { action: "getPageContent" }, async (response) => {
         try {
@@ -58,21 +78,21 @@ async function fetchWorkspaces() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify({
-                    title: tab.title,
+                    title: title,
                     content: response.content,
                     url: tab.url,
-                    workspaceId
-                })
+                    workspaceId,
+                }),
             });
             const data = await result.json();
             if (data.success) {
                 showStatus("Page saved successfully!");
                 // Open the new topic in a new tab
                 chrome.tabs.create({
-                    url: `https://app.learntime.ai/${workspaceId}/chat/${data.chatId}`
+                    url: `https://app.learntime.ai/${workspaceId}/chat/${data.chatId}`,
                 });
             }
             else {
@@ -81,6 +101,11 @@ async function fetchWorkspaces() {
         }
         catch (error) {
             showError("Failed to save page");
+        }
+        finally {
+            // Reset button state
+            saveButton.textContent = originalText;
+            saveButton.disabled = false;
         }
     });
 });
