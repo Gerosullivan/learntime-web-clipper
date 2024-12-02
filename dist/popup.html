@@ -5,38 +5,110 @@
     <style>
       body {
         width: 300px;
-        padding: 10px;
-        font-family: system-ui, -apple-system, sans-serif;
+        padding: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
       }
       .container {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
       }
-      button {
+      .title-input {
+        width: 100%;
         padding: 8px;
-        background: #0070f3;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .workspace-select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .save-button {
+        background-color: #0066cc;
         color: white;
         border: none;
+        padding: 8px 16px;
         border-radius: 4px;
         cursor: pointer;
+        font-size: 14px;
+        width: 100%;
       }
-      button:disabled {
-        background: #ccc;
+      .save-button:hover {
+        background-color: #0052a3;
       }
-      .error {
-        color: red;
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         font-size: 12px;
+      }
+      .divider {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 12px 0;
+      }
+      .field-label {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 4px;
+      }
+      .my-links {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: #666;
+      }
+      .learn-more {
+        color: #666;
+        text-decoration: none;
+      }
+      .learn-more:hover {
+        text-decoration: underline;
+      }
+      #status {
+        font-size: 12px;
+        color: #666;
+        margin-top: 8px;
+        text-align: center;
+      }
+      #status.error {
+        color: #dc3545;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <select id="workspace-select">
-        <option value="">Select Workspace</option>
-      </select>
-      <button id="save-page">Save Page as Topic</button>
+      <div>
+        <div class="field-label">Topic title</div>
+        <input
+          type="text"
+          id="title-input"
+          class="title-input"
+          placeholder="Title"
+        />
+      </div>
+      <div>
+        <div class="field-label">Add to</div>
+        <select id="workspace-select" class="workspace-select">
+          <option value="">Select workspace...</option>
+        </select>
+      </div>
+      <button id="save-page" class="save-button">Save Page</button>
       <div id="status"></div>
+      <hr class="divider" />
+      <div class="footer">
+        <a
+          href="https://learntime.ai/help-faq/web-clipper"
+          target="_blank"
+          class="learn-more"
+          >Learn More</a
+        >
+      </div>
     </div>
     <script src="popup.js"></script>
   </body>
